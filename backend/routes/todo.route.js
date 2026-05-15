@@ -20,15 +20,15 @@ router.post('/', async (req, res) => {
     })
     try {
         const newTodo = await todo.save() // wait to save new todo
-        res(201).json(newTodo) // http code 201: Created successfully
+        res.status(201).json(newTodo) // http code 201: Created successfully
     } catch(error) {
-        res.status(400).json({message: err.message}) // http code 400: bad request
+        res.status(400).json({message: error.message}) // http code 400: bad request
     }
 })
 
 // Update a todo (text and/or completed)
  
-router.patch(":id", async (req, res) => {
+router.patch('/:id', async (req, res) => {
     try {
         const todo = await Todo.findById(req.params.id) // Client requests a specific ID, await to find the Todo by id
         if (!todo) return res.status(404).json({message: "Todo not found"}) // return not found if there is no Todo with that ID
@@ -48,12 +48,11 @@ router.patch(":id", async (req, res) => {
 // Delete a todo
 router.delete('/:id', async (req, res) => {
     try {
-        await Todo.findById(req.params.id)
+        await Todo.findByIdAndDelete(req.params.id)
         res.json({message: "Todo deleted"})
     } catch(error) {
         res.status(500).json({message: err.message})
     }
-
 })
 
 export default router
