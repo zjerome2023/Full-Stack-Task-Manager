@@ -1,4 +1,4 @@
-# To-Do App
+# Full-Stack Task Manager
 
 A full-stack task manager for creating, editing, completing, and deleting todos. Data is stored in MongoDB and served through a REST API.
 
