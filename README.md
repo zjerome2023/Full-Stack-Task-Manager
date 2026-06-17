@@ -10,6 +10,8 @@ A full-stack task manager for creating, editing, completing, and deleting todos.
 
 ## Features
 
+- User registration and login (JWT authentication)
+- Per-user todos — each user only sees their own tasks
 - Add new tasks
 - Mark tasks as complete or incomplete
 - Edit task text
@@ -22,11 +24,15 @@ A full-stack task manager for creating, editing, completing, and deleting todos.
 To-Do-App/
 ├── backend/
 │   ├── config/       # Database connection
-│   ├── models/       # Mongoose schemas
-│   ├── routes/       # API routes
+│   ├── middleware/   # Auth middleware
+│   ├── models/       # Mongoose schemas (User, Todo)
+│   ├── routes/       # API routes (auth, todos)
 │   └── server.js     # Express server
 └── frontend/
     └── src/          # React application
+        ├── api/      # Axios client with auth headers
+        ├── components/
+        └── context/  # Auth state
 ```
 
 ## Prerequisites
@@ -55,7 +61,10 @@ To-Do-App/
    ```env
    MONGO_URI=your_mongodb_connection_string
    PORT=5001
+   JWT_SECRET=your_jwt_secret_key_at_least_32_characters
    ```
+
+   See [`.env.example`](.env.example) for a template.
 
 ## Development
 
@@ -88,12 +97,22 @@ The app is served from a single server on the port defined in `PORT` (default `5
 
 ## API Endpoints
 
-| Method | Endpoint        | Description              |
-|--------|-----------------|--------------------------|
-| GET    | `/api/todos`    | Get all todos            |
-| POST   | `/api/todos`    | Create a new todo        |
-| PATCH  | `/api/todos/:id`| Update a todo            |
-| DELETE | `/api/todos/:id`| Delete a todo            |
+### Auth
+
+| Method | Endpoint             | Description                          |
+|--------|----------------------|--------------------------------------|
+| POST   | `/api/auth/register` | Register a new user                  |
+| POST   | `/api/auth/login`    | Log in and receive a JWT             |
+| GET    | `/api/auth/me`       | Get current user (requires auth)     |
+
+### Todos (all require `Authorization: Bearer <token>`)
+
+| Method | Endpoint         | Description                    |
+|--------|------------------|--------------------------------|
+| GET    | `/api/todos`     | Get all todos for current user |
+| POST   | `/api/todos`     | Create a new todo              |
+| PATCH  | `/api/todos/:id` | Update a todo                  |
+| DELETE | `/api/todos/:id` | Delete a todo                  |
 
 ## License
 
