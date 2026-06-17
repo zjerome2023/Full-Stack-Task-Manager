@@ -43,7 +43,7 @@ function App() {
 
   useEffect(() => {
     fetchTodos()
-  })
+  },[])
 
   const startEditing = (todo) => {
     setEditingTodo(todo._id)
@@ -76,7 +76,7 @@ function App() {
   const toggleTodo = async (id) => {
     try {
       const todo = todos.find((t) => t._id === id)
-      const respone = await axios.patch(`/api/todos/${id}`, {completed: !todo.completed}) // Toggle completed
+      const response = await axios.patch(`/api/todos/${id}`, {completed: !todo.completed}) // Toggle completed
       setTodos(todos.map((t) => t._id === id ? response.data : t)) //Change it if same id, otherwise leave as is
     } catch (error) {
       console.log("Error toggling completed: ", error) 

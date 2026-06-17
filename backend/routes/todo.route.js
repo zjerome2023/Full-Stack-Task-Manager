@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
         const todos = await Todo.find() // Finds all todos from the Todo model, returns as a JSON
         res.json(todos)        
     } catch(error){
-        res.status(500).json({message: err.message}) // http code 500: Internal server error
+        res.status(500).json({message: error.message}) // http code 500: Internal server error
     }
 })
 
@@ -41,7 +41,7 @@ router.patch('/:id', async (req, res) => {
         const updatedTodo = await todo.save() // Saves the new todo in this variable
         res.json(updatedTodo)
     } catch(error) {
-        res.status(400).json({message: err.message})
+        res.status(400).json({message: error.message})
     }
 })
 
@@ -51,7 +51,7 @@ router.delete('/:id', async (req, res) => {
         await Todo.findByIdAndDelete(req.params.id)
         res.json({message: "Todo deleted"})
     } catch(error) {
-        res.status(500).json({message: err.message})
+        res.status(500).json({message: error.message})
     }
 })
 
